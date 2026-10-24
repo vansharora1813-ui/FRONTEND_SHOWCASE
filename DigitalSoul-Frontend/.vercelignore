@@ -1,0 +1,12 @@
+# Vercel deployment ignore rules for DigitalSoul static landing page
+.venv
+.ghost
+.pytest_cache
+*.db
+agent
+demo-apps
+desktop/src-tauri/target
+desktop/node_modules
+relay
+tests
+scripts

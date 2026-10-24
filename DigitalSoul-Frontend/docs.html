@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — DigitalSoul</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffeb;
+      --bg-alt: #f7f6dc;
+      --text: #1c1b17;
+      --text-soft: #6b675a;
+      --text-faint: #8c8675;
+      --border: rgba(58, 46, 14, 0.12);
+      --border-hover: rgba(58, 46, 14, 0.28);
+      --card-bg: rgba(255, 255, 255, 0.78);
+      --card-solid: #ffffff;
+      --accent: #b45309;
+      --accent-warm: #d97706;
+      --accent-bg: rgba(217, 119, 6, 0.08);
+      --code-bg: #1e1c16;
+      --code-text: #f5f5e8;
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'Figtree', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* Solarpunk background atmosphere */
+    .hitodama-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hitodama-sun {
+      position: absolute;
+      top: -160px;
+      right: -100px;
+      width: 580px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 222, 170, 0.45) 0%, rgba(255, 255, 235, 0) 70%);
+      filter: blur(32px);
+    }
+
+    .hitodama-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.2;
+      background-image: 
+        linear-gradient(rgba(58, 46, 14, 0.05) 1px, transparent 0),
+        linear-gradient(90deg, rgba(58, 46, 14, 0.04) 1px, transparent 0);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(180deg, black 0%, transparent 90%);
+      -webkit-mask-image: linear-gradient(180deg, black 0%, transparent 90%);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(255, 255, 235, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #1c1b17;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffeb;
+      box-shadow: 0 4px 12px rgba(28, 27, 23, 0.15);
+    }
+
+    .logo-mark svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-link {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: rgba(58, 46, 14, 0.05);
+    }
+
+    .nav-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(58, 46, 14, 0.04);
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn-secondary:hover {
+      background: #ffffff;
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 22px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffffeb;
+      background: #1c1b17;
+      border: 1px solid #1c1b17;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(28, 27, 23, 0.12);
+      transition: all 0.15s ease;
+    }
+
+    .cta-btn:hover {
+      background: #333028;
+      transform: translateY(-1px);
+    }
+
+    /* Page Layout */
+    .docs-layout {
+      position: relative;
+      z-index: 1;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px 32px 100px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 48px;
+    }
+
+    /* Sidebar Navigation */
+    .docs-sidebar {
+      position: sticky;
+      top: 96px;
+      height: fit-content;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 18px;
+    }
+
+    .search-box {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 0.88rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.12);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--text-faint);
+      pointer-events: none;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      margin: 18px 0 8px;
+    }
+
+    .docs-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .docs-nav-item a {
+      display: block;
+      padding: 7px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      font-weight: 500;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .docs-nav-item a:hover {
+      color: var(--text);
+      background: rgba(58, 46, 14, 0.04);
+    }
+
+    .docs-nav-item.active a {
+      color: var(--accent);
+      background: var(--accent-bg);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Content Area */
+    .docs-content {
+      min-width: 0;
+    }
+
+    .docs-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .docs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .docs-title {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .docs-lead {
+      font-size: 1.15rem;
+      color: var(--text-soft);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    /* Doc Sections */
+    .doc-section {
+      margin-bottom: 60px;
+      scroll-margin-top: 96px;
+    }
+
+    .doc-section-title {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      color: var(--text);
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-section-subtitle {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: var(--text);
+    }
+
+    .doc-p {
+      font-size: 0.98rem;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    /* Cards */
+    .doc-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin: 18px 0;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .doc-table th {
+      padding: 12px 16px;
+      background: rgba(58, 46, 14, 0.05);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .doc-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-soft);
+      vertical-align: top;
+    }
+
+    .doc-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .doc-method {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .method-get { background: #dbeafe; color: #1e40af; }
+    .method-post { background: #dcfce7; color: #166534; }
+
+    /* Code Blocks */
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 16px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.85);
+      border-radius: 6px;
+      padding: 4px 9px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .code-content {
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--code-text);
+      white-space: pre;
+    }
+
+    .hl-cmd { color: #f472b6; font-weight: 600; }
+    .hl-arg { color: #60a5fa; }
+    .hl-str { color: #34d399; }
+    .hl-comment { color: #94a3b8; font-style: italic; }
+    .hl-var { color: #fbbf24; }
+
+    /* Callouts */
+    .callout {
+      display: flex;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: rgba(217, 119, 6, 0.08);
+      border-left: 3px solid var(--accent-warm);
+      margin: 16px 0;
+      font-size: 0.92rem;
+      color: #78350f;
+    }
+
+    .callout-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--accent-warm);
+    }
+
+    /* Risk Badges */
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+    .risk-r0 { background: #e2e8f0; color: #334155; }
+    .risk-r1 { background: #dbeafe; color: #1e40af; }
+    .risk-r2 { background: #fef3c7; color: #b45309; }
+    .risk-r3 { background: #fee2e2; color: #991b1b; }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 235, 0.6);
+      padding: 48px 32px 36px;
+      margin-top: 80px;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      background: #1c1b17;
+      color: #ffffeb;
+      font-size: 0.88rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .docs-layout {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+      }
+      .docs-sidebar {
+        display: none;
+      }
+      .docs-title {
+        font-size: 2.2rem;
+      }
+      .navbar {
+        padding: 16px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Atmosphere -->
+  <div class="hitodama-atmosphere">
+    <div class="hitodama-sun"></div>
+    <div class="hitodama-grid"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span>DigitalSoul</span>
+    </a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="docs.html" class="nav-btn-secondary" style="font-weight: 700; border-color: var(--border-hover);">Docs</a>
+      <a href="get-started.html" class="cta-btn">Quickstart</a>
+    </div>
+  </header>
+
+  <!-- Docs Layout -->
+  <div class="docs-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="docsSearch" class="search-input" placeholder="Search documentation..." onkeyup="filterDocs()">
+      </div>
+
+      <div class="sidebar-section-title">Core Architecture</div>
+      <ul class="docs-nav-list">
+        <li class="docs-nav-item active"><a href="#overview">System Overview</a></li>
+        <li class="docs-nav-item"><a href="#architecture">M1 &ndash; M4 Architecture</a></li>
+        <li class="docs-nav-item"><a href="#browser-use">browser-use CDP Driver</a></li>
+        <li class="docs-nav-item"><a href="#omniroute">OmniRoute Gateway</a></li>
+      </ul>
+
+      <div class="sidebar-section-title">Safety & Verification</div>
+      <ul class="docs-nav-list">
+        <li class="docs-nav-item"><a href="#safety">Risk Levels & Gates</a></li>
+        <li class="docs-nav-item"><a href="#approvals">Cryptographic Approvals</a></li>
+        <li class="docs-nav-item"><a href="#contracts">Contracts & Schemas</a></li>
+      </ul>
+
+      <div class="sidebar-section-title">API & Reference</div>
+      <ul class="docs-nav-list">
+        <li class="docs-nav-item"><a href="#api">REST API Reference</a></li>
+        <li class="docs-nav-item"><a href="#blinky">Blinky Reference Notes</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content -->
+    <main class="docs-content">
+      
+      <!-- Header -->
+      <header class="docs-header" id="overview">
+        <div class="docs-badge">
+          <span>Contract Specification v1.1.0</span>
+        </div>
+        <h1 class="docs-title">DigitalSoul Documentation</h1>
+        <p class="docs-lead">
+          Complete engineering reference for compiling consented desktop and browser telemetry into deterministic DAG workflows, running via browser-use Actor sessions with strict cryptographic approval gates.
+        </p>
+      </header>
+
+      <!-- Section: System Overview -->
+      <section class="doc-section">
+        <h2 class="doc-section-title">System Overview</h2>
+        <p class="doc-p">
+          DigitalSoul bridges the gap between probabilistic AI observation and deterministic mission-critical automation. While language models excel at synthesizing intent, executing critical tasks across enterprise systems demands mathematical determinism and zero hallucination risk.
+        </p>
+
+        <div class="doc-card">
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">Guiding Architectural Principles</h3>
+          <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; color: var(--text-soft);">
+            <li><strong>Deterministic DAG Execution:</strong> Workflows compile to strictly typed Directed Acyclic Graphs with AST-compiled expressions and invariant checks.</li>
+            <li><strong>Decoupled Observation & Execution:</strong> Extension telemetry is strictly sandboxed with PII and credential sanitization at source.</li>
+            <li><strong>CDP Native Browser Control:</strong> Automations use <code>browser-use 0.13.11</code> connecting directly via Chrome DevTools Protocol, preserving authentic browser state without synthetic Playwright shims.</li>
+            <li><strong>Agent-Side Safety Gates:</strong> State-mutating actions (R2) require verified cryptographic effect hashes (SHA-256) matching operator approvals before firing.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section: Architecture -->
+      <section class="doc-section" id="architecture">
+        <h2 class="doc-section-title">M1 &ndash; M4 Architecture</h2>
+        <p class="doc-p">DigitalSoul is partitioned into four decoupled modules coordinated through formal contracts:</p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Domain</th>
+                <th>Key Technologies & Capabilities</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>M1</strong></td>
+                <td>Learning & Observation Engine</td>
+                <td>Consented DOM telemetry, semantic action observer, credential redaction at source, workflow pattern mining.</td>
+              </tr>
+              <tr>
+                <td><strong>M2</strong></td>
+                <td>Deterministic Execution Backend</td>
+                <td>FastAPI local host (<code>127.0.0.1:7777</code>), browser-use CDP driver, SQLite WAL idempotency, Ed25519 pairing, RFC 8785 canonicalization.</td>
+              </tr>
+              <tr>
+                <td><strong>M3</strong></td>
+                <td>Operator Frontend & Control</td>
+                <td>Live telemetry visualization, interactive approval review modals, dry-run simulation dashboard.</td>
+              </tr>
+              <tr>
+                <td><strong>M4</strong></td>
+                <td>Shared Bus & Application Integration</td>
+                <td>Acme demo adapters, persistent shared event sink, audit logging, enterprise SSO gateway.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: browser-use -->
+      <section class="doc-section" id="browser-use">
+        <h2 class="doc-section-title">browser-use CDP Driver</h2>
+        <p class="doc-p">
+          DigitalSoul explicitly standardizes on <strong>browser-use 0.13.11</strong> using its <code>BrowserSession</code>, <code>CDP</code>, and <code>Actor</code> APIs. Playwright imports and emulated drivers are strictly prohibited.
+        </p>
+
+        <div class="callout">
+          <svg class="callout-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <div>
+            <strong>Why browser-use?</strong> Traditional automation frameworks rely on brittle synthetic events that fail under modern bot-mitigation, canvas rendering, or complex Web Component shadows. browser-use communicates directly with Chrome DevTools Protocol to inspect genuine DOM layouts and monitor network correlation.
+          </div>
+        </div>
+
+        <h3 class="doc-section-subtitle">Dedicated Profile & Browser Discovery</h3>
+        <p class="doc-p">
+          The driver isolates state under <code>.ghost/chrome</code> and automatically detects installed Windows Chrome or Microsoft Edge binaries. To override the target browser executable:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-var">$env:DIGITALSOUL_BROWSER_EXECUTABLE</span> = <span class="hl-str">"C:\Program Files\Google\Chrome\Application\chrome.exe"</span></div>
+        </div>
+      </section>
+
+      <!-- Section: OmniRoute -->
+      <section class="doc-section" id="omniroute">
+        <h2 class="doc-section-title">OmniRoute Local AI Gateway</h2>
+        <p class="doc-p">
+          OmniRoute serves as our high-performance local inference proxy, running on loopback at <code>http://127.0.0.1:20128/v1</code>. It wraps models with unified OpenAI-compatible completions and ensures credentials never leave the host.
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-comment"># Verify OmniRoute gateway health and list configured models</span>
+<span class="hl-cmd">Invoke-RestMethod</span> <span class="hl-arg">-Method Get</span> <span class="hl-arg">-Uri</span> <span class="hl-str">'http://127.0.0.1:20128/v1/models'</span></div>
+        </div>
+      </section>
+
+      <!-- Section: Safety & Approvals -->
+      <section class="doc-section" id="safety">
+        <h2 class="doc-section-title">Safety, Approvals & Risk Levels</h2>
+        <p class="doc-p">
+          DigitalSoul categorizes all step operations into distinct risk tiers to ensure irreversible external side effects cannot be executed autonomously.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Description</th>
+                <th>Execution Policy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="risk-badge risk-r0">R0</span></td>
+                <td>Internal AST evaluations, DAG computations, string interpolations.</td>
+                <td>Automatic execution.</td>
+              </tr>
+              <tr>
+                <td><span class="risk-badge risk-r1">R1</span></td>
+                <td>External read-only actions (DOM query, GET request, status check).</td>
+                <td>Automatic execution with verification receipt.</td>
+              </tr>
+              <tr>
+                <td><span class="risk-badge risk-r2">R2</span></td>
+                <td>State mutations (Form submission, POST/PATCH, file write).</td>
+                <td><strong>Halt for operator approval</strong>; requires SHA-256 effect hash match.</td>
+              </tr>
+              <tr>
+                <td><span class="risk-badge risk-r3">R3</span></td>
+                <td>Destructive external operations (account deletion, database wipe).</td>
+                <td><strong>Blocked by default</strong> by policy engine.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-section-subtitle" id="approvals">Cryptographic Effect Binding</h3>
+        <p class="doc-p">
+          When an R2 step is encountered, DigitalSoul generates an authoritative preview and calculates an RFC 8785 canonical JSON hash of the action payload (<code>effect_hash</code>). When an operator approves the action via <code>POST /api/v1/runs/{id}/approve</code>, the approval is strictly bound to this exact hash:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">JSON Approval Payload</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content">{
+  <span class="hl-arg">"approval_id"</span>: <span class="hl-str">"appr_9823f401"</span>,
+  <span class="hl-arg">"workflow_version"</span>: 4,
+  <span class="hl-arg">"step_id"</span>: <span class="hl-str">"step_tag_churn_risk"</span>,
+  <span class="hl-arg">"effect_hash"</span>: <span class="hl-str">"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"</span>
+}</div>
+        </div>
+      </section>
+
+      <!-- Section: Contracts -->
+      <section class="doc-section" id="contracts">
+        <h2 class="doc-section-title">Contracts & Validation</h2>
+        <p class="doc-p">
+          DigitalSoul schemas are defined in the <code>contracts/</code> directory. All contract modifications must be validated using the built-in validator:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-cmd">.\.venv\Scripts\python.exe</span> <span class="hl-str">contracts/validate.py</span></div>
+        </div>
+      </section>
+
+      <!-- Section: REST API -->
+      <section class="doc-section" id="api">
+        <h2 class="doc-section-title">REST API Reference</h2>
+        <p class="doc-p">
+          All endpoints are served from <code>http://127.0.0.1:7777</code>. Requests require <code>Authorization: Bearer &lt;token&gt;</code> and strict Host/Origin verification.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Path</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="doc-method method-post">POST</span></td>
+                <td><code>/api/v1/workflows/{id}/runs</code></td>
+                <td>Trigger workflow run with parameters and mode (<code>dry_run</code> or <code>supervised</code>).</td>
+              </tr>
+              <tr>
+                <td><span class="doc-method method-get">GET</span></td>
+                <td><code>/api/v1/runs</code></td>
+                <td>List recent workflow runs with status filtering.</td>
+              </tr>
+              <tr>
+                <td><span class="doc-method method-get">GET</span></td>
+                <td><code>/api/v1/runs/{id}</code></td>
+                <td>Retrieve authoritative run state, checkpoints, outcomes, and pending approvals.</td>
+              </tr>
+              <tr>
+                <td><span class="doc-method method-post">POST</span></td>
+                <td><code>/api/v1/runs/{id}/approve</code></td>
+                <td>Submit signed approval for an awaiting R2 step.</td>
+              </tr>
+              <tr>
+                <td><span class="doc-method method-post">POST</span></td>
+                <td><code>/api/v1/runs/{id}/reject</code></td>
+                <td>Reject step mutation and cancel execution.</td>
+              </tr>
+              <tr>
+                <td><span class="doc-method method-post">POST</span></td>
+                <td><code>/api/v1/safety/stop</code></td>
+                <td>Latches emergency stop killswitch and cancels all nonterminal tasks.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Blinky -->
+      <section class="doc-section" id="blinky">
+        <h2 class="doc-section-title">Blinky Technical Reference Notes</h2>
+        <p class="doc-p">
+          Blinky (<code>C:\Projects\Blinky</code>) served as our prior technical benchmark for desktop telemetry and action correlation. Key evolutions in DigitalSoul include:
+        </p>
+
+        <div class="doc-card">
+          <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; color: var(--text-soft);">
+            <li><strong>From Coordinate Clicks to CDP Actors:</strong> DigitalSoul eliminates brittle (x, y) coordinate clicking in favor of semantic DOM locators and browser-use CDP Actor adapters.</li>
+            <li><strong>Deterministic Approval Binding:</strong> Rather than granting generic run-level authorization, DigitalSoul enforces per-iteration SHA-256 effect hash matching.</li>
+            <li><strong>Windows DPAPI Credential Isolation:</strong> Local session tokens are encrypted via Windows Data Protection API (DPAPI) rather than plaintext configuration stores.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>&copy; 2026 DigitalSoul. All rights reserved. Zero Hallucination Risk.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Documentation</a>
+        <a href="get-started.html">Quickstart</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const codeBlock = btn.closest('.code-container').querySelector('.code-content');
+      const text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+      });
+    }
+
+    function filterDocs() {
+      const query = document.getElementById('docsSearch').value.toLowerCase();
+      const sections = document.querySelectorAll('.doc-section');
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        sec.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // Scroll active indicator in TOC
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('.doc-section, .docs-header');
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (window.scrollY >= top) {
+          current = sec.getAttribute('id');
+        }
+      });
+      document.querySelectorAll('.docs-nav-item').forEach(li => {
+        li.classList.remove('active');
+        const a = li.querySelector('a');
+        if (a && a.getAttribute('href') === `#${current}`) {
+          li.classList.add('active');
+        }
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Started — DigitalSoul</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffeb;
+      --bg-alt: #f7f6dc;
+      --text: #1c1b17;
+      --text-soft: #6b675a;
+      --text-faint: #8c8675;
+      --border: rgba(58, 46, 14, 0.12);
+      --border-hover: rgba(58, 46, 14, 0.28);
+      --card-bg: rgba(255, 255, 255, 0.78);
+      --card-solid: #ffffff;
+      --accent: #b45309;
+      --accent-warm: #d97706;
+      --accent-bg: rgba(217, 119, 6, 0.08);
+      --code-bg: #1e1c16;
+      --code-text: #f5f5e8;
+      --spring: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      --ease-ui: cubic-bezier(0.2, 0.7, 0.2, 1);
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'Figtree', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* Solarpunk background atmosphere */
+    .hitodama-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hitodama-sun {
+      position: absolute;
+      top: -160px;
+      right: -100px;
+      width: 580px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 222, 170, 0.45) 0%, rgba(255, 255, 235, 0) 70%);
+      filter: blur(32px);
+    }
+
+    .hitodama-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.2;
+      background-image: 
+        linear-gradient(rgba(58, 46, 14, 0.05) 1px, transparent 0),
+        linear-gradient(90deg, rgba(58, 46, 14, 0.04) 1px, transparent 0);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(180deg, black 0%, transparent 90%);
+      -webkit-mask-image: linear-gradient(180deg, black 0%, transparent 90%);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(255, 255, 235, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #1c1b17;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffeb;
+      box-shadow: 0 4px 12px rgba(28, 27, 23, 0.15);
+    }
+
+    .logo-mark svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-link {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: rgba(58, 46, 14, 0.05);
+    }
+
+    .nav-link.active {
+      color: var(--text);
+      font-weight: 600;
+      background: rgba(58, 46, 14, 0.06);
+    }
+
+    .nav-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(58, 46, 14, 0.04);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .nav-btn-secondary:hover {
+      background: #ffffff;
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 22px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #ffffeb;
+      background: #1c1b17;
+      border: 1px solid #1c1b17;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(28, 27, 23, 0.12);
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .cta-btn:hover {
+      background: #333028;
+      border-color: #333028;
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    .page-layout {
+      position: relative;
+      z-index: 1;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 48px 32px 100px;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 56px;
+    }
+
+    /* Sidebar Table of Contents */
+    .sidebar {
+      position: sticky;
+      top: 96px;
+      height: fit-content;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 16px;
+    }
+
+    .sidebar-heading {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      margin-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc-item a {
+      display: block;
+      padding: 7px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      font-weight: 500;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .toc-item a:hover {
+      color: var(--text);
+      background: rgba(58, 46, 14, 0.04);
+    }
+
+    .toc-item.active a {
+      color: var(--accent);
+      background: var(--accent-bg);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
+    /* Header Hero inside Guide */
+    .guide-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .guide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .guide-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    }
+
+    .guide-title {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .guide-subtitle {
+      font-size: 1.18rem;
+      color: var(--text-soft);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* Feature Pills */
+    .feature-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      color: var(--text);
+    }
+
+    /* Guide Sections */
+    .guide-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 96px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #1c1b17;
+      color: #ffffeb;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .section-desc {
+      color: var(--text-soft);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    /* Guide Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(58, 46, 14, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+
+    /* Code Blocks */
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 16px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.85);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-family: var(--font-body);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    .code-content {
+      padding: 18px 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--code-text);
+      white-space: pre;
+    }
+
+    .hl-cmd { color: #f472b6; font-weight: 600; }
+    .hl-arg { color: #60a5fa; }
+    .hl-str { color: #34d399; }
+    .hl-comment { color: #94a3b8; font-style: italic; }
+    .hl-var { color: #fbbf24; }
+
+    /* Key Callouts */
+    .callout {
+      display: flex;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: rgba(217, 119, 6, 0.08);
+      border-left: 3px solid var(--accent-warm);
+      margin: 16px 0;
+      font-size: 0.92rem;
+      color: #78350f;
+    }
+
+    .callout-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--accent-warm);
+    }
+
+    /* Interactive Simulator */
+    .simulator-box {
+      background: var(--card-solid);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 12px 32px rgba(58, 46, 14, 0.06);
+      margin: 28px 0;
+    }
+
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sim-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .sim-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .sim-dot.active {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .sim-dot.paused {
+      background: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+    }
+
+    .sim-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .sim-step-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: rgba(58, 46, 14, 0.03);
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+    }
+
+    .sim-step-item.current {
+      background: #fffbeb;
+      border-color: #f59e0b;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+    }
+
+    .sim-step-item.done {
+      background: #f0fdf4;
+      border-color: #10b981;
+    }
+
+    .sim-step-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sim-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .sim-step-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .sim-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-sim {
+      padding: 10px 22px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-sim-primary {
+      background: #1c1b17;
+      color: #ffffeb;
+    }
+
+    .btn-sim-primary:hover {
+      background: #333028;
+    }
+
+    .btn-sim-approve {
+      background: #16a34a;
+      color: #ffffff;
+      display: none;
+    }
+
+    .btn-sim-approve:hover {
+      background: #15803d;
+    }
+
+    .btn-sim-reset {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+    }
+
+    .btn-sim-reset:hover {
+      color: var(--text);
+      background: rgba(58, 46, 14, 0.04);
+    }
+
+    .sim-output-console {
+      background: #161512;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      height: 130px;
+      overflow-y: auto;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 235, 0.6);
+      padding: 48px 32px 36px;
+      margin-top: 80px;
+    }
+
+    .footer-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      background: #1c1b17;
+      color: #ffffeb;
+      font-size: 0.88rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s var(--spring);
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 16px 20px;
+      }
+      .page-layout {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+      }
+      .sidebar {
+        display: none;
+      }
+      .guide-title {
+        font-size: 2.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Atmosphere -->
+  <div class="hitodama-atmosphere">
+    <div class="hitodama-sun"></div>
+    <div class="hitodama-grid"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>DigitalSoul</span>
+    </a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="docs.html" class="nav-btn-secondary">Docs</a>
+      <a href="get-started.html" class="cta-btn">Quickstart</a>
+    </div>
+  </header>
+
+  <!-- Layout Container -->
+  <div class="page-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Quickstart Guide</div>
+      <ul class="toc-list">
+        <li class="toc-item active"><a href="#overview">1. Overview</a></li>
+        <li class="toc-item"><a href="#prerequisites">2. Prerequisites</a></li>
+        <li class="toc-item"><a href="#install">3. Installation</a></li>
+        <li class="toc-item"><a href="#m2-engine">4. Run M2 Backend</a></li>
+        <li class="toc-item"><a href="#omniroute">5. OmniRoute Gateway</a></li>
+        <li class="toc-item"><a href="#extension">6. Browser Observer</a></li>
+        <li class="toc-item"><a href="#first-workflow">7. First Workflow Run</a></li>
+        <li class="toc-item"><a href="#interactive-simulator">8. Interactive Sandbox</a></li>
+        <li class="toc-item"><a href="#next-steps">9. Next Steps</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+
+      <!-- Header Section -->
+      <header class="guide-header" id="overview">
+        <div class="guide-badge">
+          <span class="guide-badge-dot"></span>
+          <span>Version 1.1.0 Ready</span>
+        </div>
+        <h1 class="guide-title">Get Started with DigitalSoul</h1>
+        <p class="guide-subtitle">
+          Turn repeated desktop work into deterministic, verifiable workflows. DigitalSoul observes consented actions and compiles them into strictly typed DAGs executed via <strong>browser-use</strong> CDP sessions.
+        </p>
+        
+        <div class="feature-strip">
+          <span class="feature-pill">⚡ Zero Hallucinations</span>
+          <span class="feature-pill">🛡️ Agent-Side Approval Gates</span>
+          <span class="feature-pill">🌐 browser-use 0.13.11 CDP</span>
+          <span class="feature-pill">🧠 OmniRoute 127.0.0.1:20128</span>
+        </div>
+      </header>
+
+      <!-- Step 1: Prerequisites -->
+      <section class="guide-section" id="prerequisites">
+        <h2 class="section-title">
+          <span class="step-number">01</span>
+          System Prerequisites
+        </h2>
+        <p class="section-desc">Before running DigitalSoul locally, ensure your system has the following requirements installed:</p>
+
+        <div class="card">
+          <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem;">
+            <li><strong>Operating System:</strong> Windows 10/11 (with PowerShell 7+ recommended) or Linux/macOS.</li>
+            <li><strong>Python Environment:</strong> Python 3.11 or Python 3.12 64-bit with <code>pip</code> and <code>venv</code>.</li>
+            <li><strong>Browser:</strong> Google Chrome or Microsoft Edge (browser-use connects directly via Chrome DevTools Protocol).</li>
+            <li><strong>Node.js (Optional):</strong> Node 18+ if building or packaging the browser observer extension.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Step 2: Installation -->
+      <section class="guide-section" id="install">
+        <h2 class="section-title">
+          <span class="step-number">02</span>
+          Clone & Environment Setup
+        </h2>
+        <p class="section-desc">Set up an isolated Python virtual environment and install dependencies in editable mode:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell (Windows)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-comment"># 1. Open PowerShell and navigate to the project directory</span>
+<span class="hl-cmd">cd</span> <span class="hl-str">"C:\Projects\DigitalSoul"</span>
+
+<span class="hl-comment"># 2. Create isolated Python virtual environment</span>
+<span class="hl-cmd">python</span> <span class="hl-arg">-m venv</span> <span class="hl-arg">.venv</span>
+
+<span class="hl-comment"># 3. Activate the virtual environment</span>
+<span class="hl-cmd">.\.venv\Scripts\Activate.ps1</span>
+
+<span class="hl-comment"># 4. Install dependencies and testing harness</span>
+<span class="hl-cmd">python</span> <span class="hl-arg">-m pip install</span> <span class="hl-arg">-e</span> <span class="hl-str">'.[test]'</span></div>
+        </div>
+
+        <div class="callout">
+          <svg class="callout-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+          <div>
+            <strong>Note on Dependencies:</strong> We deliberately use <code>browser-use</code> with native CDP/Actor APIs. Do not install Playwright, as DigitalSoul enforces strict deterministic execution without synthetic browser emulators.
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Run M2 Engine -->
+      <section class="guide-section" id="m2-engine">
+        <h2 class="section-title">
+          <span class="step-number">03</span>
+          Launch M2 Execution Backend
+        </h2>
+        <p class="section-desc">The M2 execution backend runs as a local FastAPI service on <code>127.0.0.1:7777</code>. It requires loading an explicitly admitted, reviewed workflow plan:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-comment"># Launch standalone M2 daemon with the admitted valid test workflow</span>
+<span class="hl-cmd">.\.venv\Scripts\python.exe</span> <span class="hl-arg">-m agent.ghost.api.m2_app</span> <span class="hl-arg">--workflow</span> <span class="hl-str">contracts/fixtures/workflow.valid.json</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Security & Admission Architecture</div>
+          <p class="card-desc">
+            The host binds exclusively to <code>127.0.0.1:7777</code>. HTTP clients cannot upload unvetted execution scripts and self-grant trust. All requests require a DPAPI-protected Bearer token derived through the local desktop identity:
+          </p>
+          <div class="code-container" style="margin: 0;">
+            <div class="code-content" style="padding: 12px 16px;"><span class="hl-comment"># Retrieve your local authentication token</span>
+<span class="hl-var">$token</span> = <span class="hl-cmd">.\.venv\Scripts\python.exe</span> <span class="hl-arg">-m agent.ghost.safety.credentials</span> <span class="hl-arg">--data</span> <span class="hl-str">.ghost</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: OmniRoute Gateway -->
+      <section class="guide-section" id="omniroute">
+        <h2 class="section-title">
+          <span class="step-number">04</span>
+          Connect OmniRoute AI Gateway
+        </h2>
+        <p class="section-desc">OmniRoute provides local LLM inference and model routing at <code>http://127.0.0.1:20128/v1</code>:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-comment"># 1. Start the local loopback OmniRoute daemon</span>
+<span class="hl-cmd">.\scripts\start-omniroute.ps1</span> <span class="hl-arg">-Probe</span>
+
+<span class="hl-comment"># 2. Run the diagnostic connection probe</span>
+<span class="hl-cmd">.\.venv\Scripts\python.exe</span> <span class="hl-arg">-m agent.ghost.integrations.connections</span> <span class="hl-arg">--browser</span> <span class="hl-arg">--inference</span> <span class="hl-arg">--output</span> <span class="hl-str">.ghost/connection-report.json</span></div>
+        </div>
+      </section>
+
+      <!-- Step 5: Extension Observer -->
+      <section class="guide-section" id="extension">
+        <h2 class="section-title">
+          <span class="step-number">05</span>
+          Load the Browser Extension Observer
+        </h2>
+        <p class="section-desc">The semantic observer records repeated actions within your web applications while redacting sensitive fields:</p>
+
+        <div class="card">
+          <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem;">
+            <li>Open Google Chrome or Microsoft Edge and navigate to <code>chrome://extensions</code>.</li>
+            <li>Enable <strong>Developer mode</strong> in the top-right toggle.</li>
+            <li>Click <strong>Load unpacked</strong> and select the <code>extension/</code> folder in this repository.</li>
+            <li>Click the DigitalSoul icon in your toolbar to verify the observer status ("Observing - Redaction active").</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Step 6: First Workflow Run -->
+      <section class="guide-section" id="first-workflow">
+        <h2 class="section-title">
+          <span class="step-number">06</span>
+          Dispatch Your First Workflow Run
+        </h2>
+        <p class="section-desc">Trigger a safe dry run through PowerShell using authenticated REST invocations:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-content"><span class="hl-var">$token</span> = <span class="hl-cmd">.\.venv\Scripts\python.exe</span> <span class="hl-arg">-m agent.ghost.safety.credentials</span> <span class="hl-arg">--data</span> <span class="hl-str">.ghost</span>
+<span class="hl-var">$headers</span> = @{
+    Authorization = <span class="hl-str">"Bearer $token"</span>
+    <span class="hl-str">'Idempotency-Key'</span> = [guid]::NewGuid().ToString()
+}
+<span class="hl-var">$body</span> = @{
+    workflow_version = 4
+    mode = <span class="hl-str">'dry_run'</span>
+    parameters = @{}
+} | <span class="hl-cmd">ConvertTo-Json</span>
+
+<span class="hl-cmd">Invoke-RestMethod</span> <span class="hl-arg">-Method Post</span> <span class="hl-arg">-Uri</span> <span class="hl-str">'http://127.0.0.1:7777/api/v1/workflows/wf_at_risk_seg/runs'</span> <span class="hl-arg">-Headers</span> <span class="hl-var">$headers</span> <span class="hl-arg">-ContentType</span> <span class="hl-str">'application/json'</span> <span class="hl-arg">-Body</span> <span class="hl-var">$body</span></div>
+        </div>
+      </section>
+
+      <!-- Step 7: Interactive Simulator -->
+      <section class="guide-section" id="interactive-simulator">
+        <h2 class="section-title">
+          <span class="step-number">07</span>
+          Interactive Execution Simulator
+        </h2>
+        <p class="section-desc">Experience how DigitalSoul halts before state mutation and enforces cryptographic approval gates:</p>
+
+        <div class="simulator-box">
+          <div class="sim-header">
+            <div>
+              <div style="font-weight: 600; font-size: 1.05rem;">Workflow Execution Playground</div>
+              <div style="font-size: 0.85rem; color: var(--text-soft);">Simulating: <code>wf_customer_reconciliation (v4)</code></div>
+            </div>
+            <div class="sim-status">
+              <span class="sim-dot" id="simDot"></span>
+              <span id="simStatusText">IDLE</span>
+            </div>
+          </div>
+
+          <div class="sim-steps">
+            <div class="sim-step-item" id="simStep1">
+              <div class="sim-step-left">
+                <span class="sim-badge">R0</span>
+                <span class="sim-step-name">1. Compile DAG & Canonicalize (RFC 8785)</span>
+              </div>
+              <span class="sim-badge" id="simStep1Badge">Pending</span>
+            </div>
+
+            <div class="sim-step-item" id="simStep2">
+              <div class="sim-step-left">
+                <span class="sim-badge">R1</span>
+                <span class="sim-step-name">2. browser-use CDP Observer: Fetch Acme Customer DOM</span>
+              </div>
+              <span class="sim-badge" id="simStep2Badge">Pending</span>
+            </div>
+
+            <div class="sim-step-item" id="simStep3">
+              <div class="sim-step-left">
+                <span class="sim-badge">R2</span>
+                <span class="sim-step-name">3. Approval Gate: Mutate Tag [at-risk-customer]</span>
+              </div>
+              <span class="sim-badge" id="simStep3Badge">Pending</span>
+            </div>
+
+            <div class="sim-step-item" id="simStep4">
+              <div class="sim-step-left">
+                <span class="sim-badge">R1</span>
+                <span class="sim-step-name">4. Reconcile & Output Cryptographic Receipt</span>
+              </div>
+              <span class="sim-badge" id="simStep4Badge">Pending</span>
+            </div>
+          </div>
+
+          <div class="sim-actions">
+            <button class="btn-sim btn-sim-primary" id="startSimBtn" onclick="runSimulation()">Start Test Run</button>
+            <button class="btn-sim btn-sim-approve" id="approveSimBtn" onclick="approveStep()">Approve Mutation Gate</button>
+            <button class="btn-sim btn-sim-reset" onclick="resetSimulation()">Reset</button>
+          </div>
+
+          <div class="sim-output-console" id="simConsole">
+            [system] Ready. Click 'Start Test Run' to begin simulated deterministic workflow execution...
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 8: Next Steps -->
+      <section class="guide-section" id="next-steps">
+        <h2 class="section-title">
+          <span class="step-number">08</span>
+          Next Steps & Technical Architecture
+        </h2>
+        <p class="section-desc">Dive deeper into the system contracts, security review, and driver architecture:</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <a href="docs.html" class="card" style="text-decoration: none; color: inherit; transition: transform 0.15s ease, border-color 0.15s ease;">
+            <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 6px; color: var(--text);">Documentation Portal &rarr;</div>
+            <p style="font-size: 0.9rem; color: var(--text-soft);">Complete API endpoints, schema specifications, and driver reference guides.</p>
+          </a>
+          <a href="docs.html#contracts" class="card" style="text-decoration: none; color: inherit; transition: transform 0.15s ease, border-color 0.15s ease;">
+            <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 6px; color: var(--text);">Schema Contracts &rarr;</div>
+            <p style="font-size: 0.9rem; color: var(--text-soft);">JSON Schemas, RFC 8785 canonical hash computation, and wire models.</p>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copied command to clipboard!</div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>&copy; 2026 DigitalSoul. Deterministic Desktop Automation &middot; Zero Hallucination Risk.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Documentation</a>
+        <a href="get-started.html">Quickstart</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copy code block to clipboard
+    function copyCode(btn) {
+      const codeBlock = btn.closest('.code-container').querySelector('.code-content');
+      const text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Copied command to clipboard!");
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // Interactive Simulator Script
+    let simTimer = null;
+    let simStage = 0;
+
+    function logSim(msg) {
+      const con = document.getElementById('simConsole');
+      const time = new Date().toLocaleTimeString();
+      con.innerHTML += `\n[${time}] ${msg}`;
+      con.scrollTop = con.scrollHeight;
+    }
+
+    function runSimulation() {
+      resetSimulation();
+      document.getElementById('startSimBtn').style.display = 'none';
+      document.getElementById('simDot').className = 'sim-dot active';
+      document.getElementById('simStatusText').textContent = 'RUNNING';
+
+      logSim("Dispatching run wf_at_risk_seg with mode='supervised'...");
+
+      // Step 1
+      setTimeout(() => {
+        const s1 = document.getElementById('simStep1');
+        s1.classList.add('current');
+        document.getElementById('simStep1Badge').textContent = 'Validating';
+        logSim("Compiling workflow DAG. RFC 8785 Canonical hash: sha256:8f2a... verified.");
+
+        setTimeout(() => {
+          s1.classList.remove('current');
+          s1.classList.add('done');
+          document.getElementById('simStep1Badge').textContent = 'Passed';
+
+          // Step 2
+          const s2 = document.getElementById('simStep2');
+          s2.classList.add('current');
+          document.getElementById('simStep2Badge').textContent = 'Executing';
+          logSim("Connecting to browser-use CDP session. Target URL: http://crm.acme.local");
+          logSim("Extracted customer record id='cust_942', plan='enterprise', at_risk=true.");
+
+          setTimeout(() => {
+            s2.classList.remove('current');
+            s2.classList.add('done');
+            document.getElementById('simStep2Badge').textContent = 'Extracted';
+
+            // Step 3 - Approval Halt
+            const s3 = document.getElementById('simStep3');
+            s3.classList.add('current');
+            document.getElementById('simStep3Badge').textContent = 'Approval Required';
+            document.getElementById('simDot').className = 'sim-dot paused';
+            document.getElementById('simStatusText').textContent = 'AWAITING APPROVAL';
+
+            logSim("⚠️ R2 External Mutation Gate Hit: PATCH /api/customers/cust_942");
+            logSim("Effect Hash: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+            logSim("Preview: Tagging customer as 'churn-risk'. Local operator confirmation required.");
+
+            document.getElementById('approveSimBtn').style.display = 'inline-block';
+          }, 1000);
+        }, 900);
+      }, 500);
+    }
+
+    function approveStep() {
+      document.getElementById('approveSimBtn').style.display = 'none';
+      document.getElementById('simDot').className = 'sim-dot active';
+      document.getElementById('simStatusText').textContent = 'RUNNING';
+
+      const s3 = document.getElementById('simStep3');
+      s3.classList.remove('current');
+      s3.classList.add('done');
+      document.getElementById('simStep3Badge').textContent = 'Approved';
+
+      logSim("Operator approved effect sha256:e3b0c... via Bearer Token credential.");
+      logSim("Dispatching browser-use Actor DOM interaction: select_option('churn-risk')...");
+
+      setTimeout(() => {
+        const s4 = document.getElementById('simStep4');
+        s4.classList.add('current');
+        document.getElementById('simStep4Badge').textContent = 'Reconciling';
+        logSim("Performing read-only independent confirmation GET /api/customers/cust_942.");
+        logSim("Outcome verified: tag matches 'churn-risk'. Writing idempotency checkpoint.");
+
+        setTimeout(() => {
+          s4.classList.remove('current');
+          s4.classList.add('done');
+          document.getElementById('simStep4Badge').textContent = 'Completed';
+          document.getElementById('simDot').className = 'sim-dot active';
+          document.getElementById('simStatusText').textContent = 'COMPLETED (100% Deterministic)';
+          logSim("Workflow run concluded successfully. Zero hallucinations detected.");
+          document.getElementById('startSimBtn').style.display = 'inline-block';
+          document.getElementById('startSimBtn').textContent = 'Run Again';
+        }, 900);
+      }, 800);
+    }
+
+    function resetSimulation() {
+      for (let i = 1; i <= 4; i++) {
+        const step = document.getElementById(`simStep${i}`);
+        step.className = 'sim-step-item';
+        document.getElementById(`simStep${i}Badge`).textContent = 'Pending';
+      }
+      document.getElementById('simDot').className = 'sim-dot';
+      document.getElementById('simStatusText').textContent = 'IDLE';
+      document.getElementById('approveSimBtn').style.display = 'none';
+      document.getElementById('startSimBtn').style.display = 'inline-block';
+      document.getElementById('startSimBtn').textContent = 'Start Test Run';
+      document.getElementById('simConsole').textContent = "[system] Ready. Click 'Start Test Run' to begin simulated deterministic workflow execution...";
+    }
+
+    // Scroll active indicator in TOC
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('.guide-section, .guide-header');
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (window.scrollY >= top) {
+          current = sec.getAttribute('id');
+        }
+      });
+      document.querySelectorAll('.toc-item').forEach(li => {
+        li.classList.remove('active');
+        const a = li.querySelector('a');
+        if (a && a.getAttribute('href') === `#${current}`) {
+          li.classList.add('active');
+        }
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Dashboard — DigitalSoul Live Companion</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffeb;
+      --bg-alt: #f7f6dc;
+      --text: #1c1b17;
+      --text-soft: #6b675a;
+      --text-faint: #8c8675;
+      --border: rgba(58, 46, 14, 0.12);
+      --border-hover: rgba(58, 46, 14, 0.26);
+      --card-bg: rgba(255, 254, 244, 0.92);
+      --card-inner: rgba(247, 244, 230, 0.75);
+      --card-inner-hover: rgba(255, 255, 255, 0.95);
+      --input-bg: rgba(255, 255, 255, 0.85);
+      --accent: #b45309;
+      --accent-warm: #d97706;
+      --accent-soft: rgba(217, 119, 6, 0.1);
+      --ink-pill: #1c1b17;
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'Figtree', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --ease-ui: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Solarpunk Background Atmosphere */
+    .hitodama-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hitodama-sun {
+      position: absolute;
+      top: -140px;
+      right: 15%;
+      width: 580px;
+      height: 580px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 222, 170, 0.55) 0%, rgba(224, 159, 62, 0.18) 45%, transparent 72%);
+      filter: blur(48px);
+      transform: translate3d(0, 0, 0);
+    }
+
+    .hitodama-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.25;
+      background-image: 
+        linear-gradient(rgba(58, 46, 14, 0.05) 1px, transparent 0),
+        linear-gradient(90deg, rgba(58, 46, 14, 0.04) 1px, transparent 0);
+      background-size: 88px 88px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 90%);
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 90%);
+    }
+
+    /* Top Navigation Navbar */
+    .site-nav {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo .logo-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #1c1b17;
+      color: #ffffeb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(28, 27, 23, 0.15);
+    }
+
+    .nav-logo .logo-mark svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 20px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(58, 46, 14, 0.04);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s var(--ease-ui);
+    }
+
+    .nav-btn-secondary:hover {
+      background: #ffffff;
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(58, 46, 14, 0.08);
+    }
+
+    .live-daemon-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(58, 46, 14, 0.04);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-soft);
+    }
+
+    .status-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #16a34a;
+      box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
+      animation: statusPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.85); opacity: 0.65; }
+    }
+
+    /* Page Main Container */
+    .dashboard-hero-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1040px;
+      margin: 12px auto 80px;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Editorial Header Section */
+    .editorial-header {
+      text-align: center;
+      margin-bottom: 36px;
+      max-width: 760px;
+    }
+
+    .editorial-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(180, 83, 9, 0.08);
+      border: 1px solid rgba(180, 83, 9, 0.2);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .editorial-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .editorial-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      line-height: 1.12;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .editorial-title em {
+      font-style: italic;
+      color: #9c6c2e;
+      font-weight: 400;
+    }
+
+    .editorial-sub {
+      font-size: clamp(15px, 1.1vw, 17px);
+      color: var(--text-soft);
+      line-height: 1.6;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ==============================================================
+       Premium Solarpunk Notch Bar Companion Console (Hitodama Glass)
+       ============================================================== */
+    .notch-console {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px 28px 32px;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        0 20px 48px -12px rgba(58, 46, 14, 0.18),
+        0 0 0 6px rgba(180, 83, 9, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.3s var(--ease-ui), box-shadow 0.3s ease;
+    }
+
+    .notch-console:hover {
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 26px 56px -12px rgba(58, 46, 14, 0.22),
+        0 0 0 8px rgba(180, 83, 9, 0.06);
+    }
+
+    /* Console Top Header */
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .console-brand h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .console-brand p {
+      font-size: 13.5px;
+      color: var(--text-soft);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .console-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .console-mic-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(58, 46, 14, 0.06);
+      transition: all 0.2s ease;
+    }
+
+    .console-mic-btn:hover {
+      background: var(--text);
+      color: #ffffeb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(28, 27, 23, 0.2);
+    }
+
+    .console-mic-btn.is-active {
+      background: var(--accent);
+      color: #ffffeb;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(180, 83, 9, 0.4);
+    }
+
+    .console-mic-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .console-status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #16a34a;
+      box-shadow: 0 0 8px rgba(22, 163, 74, 0.65);
+      animation: greenPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes greenPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.18); opacity: 0.7; }
+    }
+
+    /* Segmented Capsule Tabs */
+    .console-tabs {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(58, 46, 14, 0.05);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(58, 46, 14, 0.08);
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .console-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-soft);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.18s var(--ease-ui);
+    }
+
+    .console-tab:hover {
+      color: var(--text);
+    }
+
+    .console-tab.active {
+      background: #ffffff;
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(58, 46, 14, 0.08);
+    }
+
+    .console-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(58, 46, 14, 0.08);
+      color: var(--text-soft);
+    }
+
+    .console-tab.active .console-badge {
+      background: rgba(180, 83, 9, 0.14);
+      color: var(--accent);
+    }
+
+    /* Quick Action Pills */
+    .console-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.2s var(--ease-ui);
+    }
+
+    .pill-btn-add {
+      background: rgba(147, 51, 234, 0.09);
+      border-color: rgba(147, 51, 234, 0.28);
+      color: #7e22ce;
+    }
+
+    .pill-btn-add:hover {
+      background: rgba(147, 51, 234, 0.16);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(147, 51, 234, 0.18);
+    }
+
+    .pill-btn-excel {
+      background: #ffffff;
+      border-color: var(--border);
+      color: #15803d;
+      box-shadow: 0 1px 4px rgba(58, 46, 14, 0.04);
+    }
+
+    .pill-btn-excel:hover {
+      background: #fdfdfa;
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .pill-btn-shopify {
+      background: #ffffff;
+      border-color: var(--border);
+      color: #c2410c;
+      box-shadow: 0 1px 4px rgba(58, 46, 14, 0.04);
+    }
+
+    .pill-btn-shopify:hover {
+      background: #fdfdfa;
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .pill-btn-record {
+      background: var(--text);
+      border-color: var(--text);
+      color: #ffffeb;
+      font-weight: 600;
+      margin-left: auto;
+      box-shadow: 0 4px 14px rgba(28, 27, 23, 0.2);
+    }
+
+    .pill-btn-record:hover {
+      background: #2b2823;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(28, 27, 23, 0.26);
+    }
+
+    .pill-btn-record.is-recording {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #ffffff;
+    }
+
+    .rec-indicator-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: recordBlink 1.4s infinite;
+    }
+
+    .pill-btn-record.is-recording .rec-indicator-dot {
+      background: #ffffff;
+    }
+
+    @keyframes recordBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.75); }
+    }
+
+    /* Jarvis Command Capsule */
+    .jarvis-capsule {
+      margin-bottom: 26px;
+      padding: 16px 18px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .jarvis-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+    }
+
+    .jarvis-label-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    .jarvis-operator-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    .jarvis-field {
+      display: flex;
+      align-items: center;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px 8px 6px 14px;
+      gap: 10px;
+      box-shadow: inset 0 1px 3px rgba(58, 46, 14, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .jarvis-field:focus-within {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.12);
+    }
+
+    .jarvis-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .jarvis-btn-find {
+      background: var(--text);
+      color: #ffffeb;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(28, 27, 23, 0.15);
+      transition: all 0.18s ease;
+    }
+
+    .jarvis-btn-find:hover {
+      background: #333029;
+      transform: translateY(-1px);
+    }
+
+    .jarvis-caption-text {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Helper Routine Section */
+    .helper-box {
+      margin-top: 24px;
+    }
+
+    .helper-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 24px;
+      margin-bottom: 2px;
+    }
+
+    .helper-overline-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .helper-heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .helper-heading-row h2 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--text);
+    }
+
+    .stays-pc-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.08);
+      border: 1px solid rgba(22, 163, 74, 0.22);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #15803d;
+    }
+
+    .stays-pc-pill span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #16a34a;
+    }
+
+    /* Search Bar */
+    .routine-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 16px;
+      margin-bottom: 22px;
+      box-shadow: 0 1px 4px rgba(58, 46, 14, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .routine-search-bar:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.1);
+    }
+
+    .routine-search-bar svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-faint);
+      fill: none;
+      stroke-width: 2.2;
+    }
+
+    .routine-search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--text);
+    }
+
+    .routine-search-input::placeholder {
+      color: var(--text-faint);
+    }
+
+    /* Routine Group Lists */
+    .routine-group-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .routine-group-title svg {
+      width: 16px;
+      height: 16px;
+      fill: #16a34a;
+    }
+
+    .group-counter-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: rgba(58, 46, 14, 0.07);
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+
+    /* Workflow Routine Card */
+    .routine-card-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(58, 46, 14, 0.04);
+      transition: all 0.22s var(--ease-ui);
+      position: relative;
+    }
+
+    .routine-card-item:hover {
+      background: #ffffff;
+      border-color: rgba(180, 83, 9, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(58, 46, 14, 0.1);
+    }
+
+    .routine-card-item.is-running-card {
+      border-color: var(--accent);
+      background: #fffdf8;
+      box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.18), 0 10px 28px rgba(58, 46, 14, 0.12);
+    }
+
+    .routine-card-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .routine-icon-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(22, 163, 74, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #16a34a;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+    }
+
+    .routine-icon-circle svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .routine-main-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .routine-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .routine-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .badge-state-ready {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.12);
+      color: #15803d;
+      border: 1px solid rgba(22, 163, 74, 0.28);
+    }
+
+    .badge-state-replayable {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+
+    .routine-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .target-tag-green {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(22, 163, 74, 0.08);
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .target-tag-gray {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(58, 46, 14, 0.06);
+      color: var(--text-soft);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .routine-quote {
+      color: var(--text-faint);
+      font-style: italic;
+      font-size: 12px;
+    }
+
+    .routine-card-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .routine-telemetry-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .telemetry-dot-online {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #16a34a;
+      margin-bottom: 2px;
+    }
+
+    .telemetry-stat {
+      font-size: 11px;
+      color: var(--text-soft);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    .card-chevron {
+      color: var(--text-faint);
+      font-size: 20px;
+      font-weight: 300;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .routine-card-item:hover .card-chevron {
+      transform: translateX(3px);
+      color: var(--accent);
+    }
+
+    /* Live Action Toast Banner */
+    .toast-banner {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1c1b17;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffeb;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 500;
+      box-shadow: 0 14px 36px rgba(28, 27, 23, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    .toast-banner.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Solarpunk Warm Atmosphere -->
+  <div class="hitodama-atmosphere">
+    <div class="hitodama-sun"></div>
+    <div class="hitodama-grid"></div>
+  </div>
+
+
+  <!-- Top Navigation Header -->
+  <header class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>DigitalSoul</span>
+    </a>
+
+    <div class="nav-right-actions">
+      <div class="live-daemon-status">
+        <span class="status-dot-pulse"></span>
+        <span>M2 Daemon · 127.0.0.1:7777</span>
+      </div>
+      <a href="index.html" class="nav-btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>Back to Landing Page</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Hero & Companion Center -->
+  <main class="dashboard-hero-wrapper" role="main">
+
+    <!-- Editorial Header Text -->
+    <div class="editorial-header">
+      <div class="editorial-tag">Desktop Operator &amp; Observer Console</div>
+      <h1 class="editorial-title">
+        Your Personal Workflows.<br>
+        <em>Compiled with Verifiable Precision.</em>
+      </h1>
+      <p class="editorial-sub">
+        Every routine captured with your explicit consent. Verified through deterministic DAG execution, zero cloud leaks, and strictly bounded local parameters.
+      </p>
+    </div>
+
+    <!-- The Elevated Solarpunk Notch Bar Companion Console (Exact Image UI) -->
+    <div class="notch-console" aria-label="DigitalSoul Desktop Notch Bar">
+
+      <!-- Console Header -->
+      <div class="console-header">
+        <div class="console-brand">
+          <h3>DigitalSoul</h3>
+          <p>Boo! I remember your routines.</p>
+        </div>
+        <div class="console-header-right">
+          <button type="button" class="console-mic-btn" id="micBtn" aria-label="Voice Dictation" title="Voice Dictation">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+          </button>
+          <div title="Local Loopback: Active">
+            <span class="console-status-dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <nav class="console-tabs" aria-label="Filter Routines">
+        <button type="button" class="console-tab active" data-tab="workflows">
+          <span>Workflows</span>
+          <span class="console-badge" id="workflowBadgeCount">5</span>
+        </button>
+        <button type="button" class="console-tab" data-tab="learned">
+          <span>Learned</span>
+          <span class="console-badge">0</span>
+        </button>
+        <button type="button" class="console-tab" data-tab="activity">
+          <span>Activity</span>
+          <span class="console-badge">0</span>
+        </button>
+      </nav>
+
+      <!-- Quick Action Buttons -->
+      <div class="console-actions-row">
+        <button type="button" class="pill-btn pill-btn-add" id="addWorkflowBtn">
+          <span>✨</span>
+          <span>Add workflow</span>
+        </button>
+
+        <button type="button" class="pill-btn pill-btn-excel" onclick="filterRoutines('excel')">
+          <span>📊</span>
+          <span>Excel</span>
+        </button>
+
+        <button type="button" class="pill-btn pill-btn-shopify" onclick="filterRoutines('shopify')">
+          <span>📦</span>
+          <span>Shopify</span>
+        </button>
+
+        <button type="button" class="pill-btn pill-btn-record" id="newRecordingBtn">
+          <span class="rec-indicator-dot"></span>
+          <span id="recordingLabel">New recording</span>
+        </button>
+      </div>
+
+      <!-- Jarvis Prompt Input Capsule -->
+      <div class="jarvis-capsule">
+        <div class="jarvis-meta-row">
+          <span class="jarvis-label-tag">Jarvis Assistant</span>
+          <span class="jarvis-operator-name">to vansh arora</span>
+        </div>
+        <div class="jarvis-field">
+          <input type="text" class="jarvis-input" id="jarvisInput" value="open chatgpt" placeholder="Type or dictate a prompt..." />
+          <button type="button" class="jarvis-btn-find" id="findBtn">Find</button>
+        </div>
+        <p class="jarvis-caption-text">
+          Speak with the mic, type, or dictate here. Review the saved steps before running.
+        </p>
+      </div>
+
+      <!-- Helper & Workflows Section -->
+      <div class="helper-box">
+        <div class="helper-top-badge">👻</div>
+        <div class="helper-overline-label">YOUR LITTLE HELPER</div>
+
+        <div class="helper-heading-row">
+          <h2>What should I repeat for you?</h2>
+          <div class="stays-pc-pill">
+            <span class="dot"></span>
+            <span>Stays on this PC</span>
+          </div>
+        </div>
+
+        <!-- Search Routines Input -->
+        <div class="routine-search-bar">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="routine-search-input" id="routineSearch" placeholder="Ask or find a routine... (e.g. open downloads)" />
+        </div>
+
+        <!-- Routine Lists -->
+        <div id="routinesContainer">
+
+          <!-- Group 1: WhatsApp sends -->
+          <div class="routine-group-block" data-group="whatsapp-sends">
+            <div class="routine-group-title">
+              <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.93 11.93 0 0012.06 0C5.46 0 .09 5.37.09 11.97c0 2.11.55 4.16 1.6 5.97L0 24l6.22-1.63a11.95 11.95 0 005.84 1.51h.01c6.6 0 11.97-5.37 11.97-11.97 0-3.2-1.25-6.21-3.52-8.43zM12.06 21.87h-.01a9.92 9.92 0 01-5.06-1.38l-.36-.22-3.76.99 1-3.66-.24-.38a9.92 9.92 0 01-1.52-5.25c0-5.49 4.47-9.95 9.96-9.95 2.66 0 5.16 1.04 7.04 2.92a9.9 9.9 0 012.92 7.04c0 5.49-4.47 9.95-9.96 9.95z"/></svg>
+              <span>WhatsApp sends</span>
+              <span class="group-counter-pill">1</span>
+            </div>
+
+            <!-- Routine Card 1 -->
+            <div class="routine-card-item" id="cardHappyBirthday" onclick="triggerWorkflowAction('happy birthday', 'WhatsApp → Vansh Arora', this)">
+              <div class="routine-card-left">
+                <div class="routine-icon-circle">
+                  <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                </div>
+                <div class="routine-main-col">
+                  <div class="routine-name-row">
+                    <span class="routine-name">happy birthday</span>
+                    <span class="badge-state-ready">Ready to send</span>
+                  </div>
+                  <div class="routine-chips-row">
+                    <span class="target-tag-green">→ Vansh Arora</span>
+                    <span class="routine-quote">"happy birthday"</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="routine-card-right">
+                <div class="routine-telemetry-col">
+                  <span class="telemetry-dot-online"></span>
+                  <span class="telemetry-stat">5 steps</span>
+                  <span class="telemetry-stat">10s</span>
+                  <span class="telemetry-stat" id="statTimeBirthday">9h ago</span>
+                </div>
+                <span class="card-chevron">›</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Group 2: WhatsApp, no send -->
+          <div class="routine-group-block" data-group="whatsapp-no-send">
+            <div class="routine-group-title">
+              <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.93 11.93 0 0012.06 0C5.46 0 .09 5.37.09 11.97c0 2.11.55 4.16 1.6 5.97L0 24l6.22-1.63a11.95 11.95 0 005.84 1.51h.01c6.6 0 11.97-5.37 11.97-11.97 0-3.2-1.25-6.21-3.52-8.43zM12.06 21.87h-.01a9.92 9.92 0 01-5.06-1.38l-.36-.22-3.76.99 1-3.66-.24-.38a9.92 9.92 0 01-1.52-5.25c0-5.49 4.47-9.95 9.96-9.95 2.66 0 5.16 1.04 7.04 2.92a9.9 9.9 0 012.92 7.04c0 5.49-4.47 9.95-9.96 9.95z"/></svg>
+              <span>WhatsApp, no send</span>
+              <span class="group-counter-pill">2</span>
+            </div>
+
+            <!-- Routine Card 2 -->
+            <div class="routine-card-item" id="cardSayHello" onclick="triggerWorkflowAction('say hello', 'Desktop 1 (.ghost/chrome)', this)">
+              <div class="routine-card-left">
+                <div class="routine-icon-circle">
+                  <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                </div>
+                <div class="routine-main-col">
+                  <div class="routine-name-row">
+                    <span class="routine-name">say hello</span>
+                    <span class="badge-state-replayable">Replayable</span>
+                  </div>
+                  <div class="routine-chips-row">
+                    <span class="target-tag-gray">Desktop 1</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="routine-card-right">
+                <div class="routine-telemetry-col">
+                  <span class="telemetry-dot-online"></span>
+                  <span class="telemetry-stat">5 steps</span>
+                  <span class="telemetry-stat">27s</span>
+                  <span class="telemetry-stat" id="statTimeHello">6h ago</span>
+                </div>
+                <span class="card-chevron">›</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Live Toast Feedback -->
+  <div class="toast-banner" id="actionToast">
+    <span id="toastIcon">✨</span>
+    <span id="toastMsg">Action triggered</span>
+  </div>
+
+  <script>
+    // Broadcast Channel for live synchronization with other tabs/companion consoles
+    const syncChannel = new BroadcastChannel('digitalsoul_sync_channel');
+
+    const jarvisInput = document.getElementById('jarvisInput');
+
+    let currentExecutionInterval = null;
+    let currentTimerInterval = null;
+    let activeRunningCard = null;
+
+    // Routine Execution Steps
+    const WORKFLOW_STEPS = [
+      { step: "Step 1/5", desc: "Connecting browser-use 0.13.11 CDP to profile .ghost/chrome...", pct: 20 },
+      { step: "Step 2/5", desc: "Resolving resilient target locator #message-box (zero drift)...", pct: 45 },
+      { step: "Step 3/5", desc: "Querying loopback OmniRoute AI gateway (127.0.0.1:20128)...", pct: 68 },
+      { step: "Step 4/5", desc: "Cryptographic approval gate: RFC 8785 SHA-256 hash verified...", pct: 88 },
+      { step: "Step 5/5", desc: "Mutation dispatched via browser-use Actor · SQLite WAL signed receipt.", pct: 100 }
+    ];
+
+    // Trigger workflow action
+    function triggerWorkflowAction(taskName, targetSub, cardEl) {
+      if (activeRunningCard) {
+        activeRunningCard.classList.remove('is-running-card');
+      }
+      activeRunningCard = cardEl;
+      if (cardEl) cardEl.classList.add('is-running-card');
+
+      showToast(`Executing: ${taskName}`, '⚡');
+
+      // Broadcast to other tabs / landing console
+      syncChannel.postMessage({
+        type: 'TASK_START',
+        taskName: taskName,
+        targetSub: targetSub
+      });
+
+      // Sequence the steps live
+      let currentStepIdx = 0;
+      clearInterval(currentExecutionInterval);
+
+      currentExecutionInterval = setInterval(() => {
+        if (currentStepIdx < WORKFLOW_STEPS.length) {
+          const s = WORKFLOW_STEPS[currentStepIdx];
+
+          syncChannel.postMessage({
+            type: 'TASK_STEP',
+            step: s.step,
+            desc: s.desc,
+            pct: s.pct
+          });
+
+          currentStepIdx++;
+        } else {
+          // Task Finished!
+          clearInterval(currentExecutionInterval);
+          clearInterval(currentTimerInterval);
+
+          showToast(`"${taskName}" completed & signed!`, '✅');
+
+          // Update timestamp on card
+          if (taskName === 'happy birthday') {
+            const el = document.getElementById('statTimeBirthday');
+            if (el) el.textContent = 'Just now';
+          } else if (taskName === 'say hello') {
+            const el = document.getElementById('statTimeHello');
+            if (el) el.textContent = 'Just now';
+          }
+
+          syncChannel.postMessage({
+            type: 'TASK_DONE',
+            taskName: taskName
+          });
+
+          // Reset running card after 2.4s
+          setTimeout(() => {
+            stopCurrentTask(false);
+          }, 2400);
+        }
+      }, 620);
+    }
+
+    // Stop / Reset task
+    function stopCurrentTask(userAborted = true) {
+      clearInterval(currentExecutionInterval);
+      clearInterval(currentTimerInterval);
+
+      if (activeRunningCard) {
+        activeRunningCard.classList.remove('is-running-card');
+        activeRunningCard = null;
+      }
+
+      if (userAborted) {
+        showToast('Task halted by operator', '⏹️');
+        syncChannel.postMessage({ type: 'TASK_ABORTED' });
+      }
+    }
+
+    // Live typing in Jarvis input immediately syncs with broadcast channel
+    jarvisInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      syncChannel.postMessage({ type: 'INPUT_CHANGE', value: val });
+    });
+
+    jarvisInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('findBtn').click();
+      }
+    });
+
+    // Find Button in Jarvis: runs task live
+    document.getElementById('findBtn').addEventListener('click', () => {
+      const val = jarvisInput.value.trim() || 'open chatgpt';
+      triggerWorkflowAction(val, 'Jarvis Directive', null);
+    });
+
+    // Recording Toggle
+    const recBtn = document.getElementById('newRecordingBtn');
+    const recLabel = document.getElementById('recordingLabel');
+    let isRecording = false;
+    let recTimer = null;
+    let recSecs = 0;
+
+    recBtn.addEventListener('click', () => {
+      isRecording = !isRecording;
+      if (isRecording) {
+        recBtn.classList.add('is-recording');
+        recLabel.textContent = 'Recording...';
+        recSecs = 0;
+        
+        clearInterval(recTimer);
+        recTimer = setInterval(() => {
+          recSecs++;
+          syncChannel.postMessage({ type: 'RECORDING_TICK', secs: recSecs });
+        }, 1000);
+
+        showToast('Observation session active', '🔴');
+        syncChannel.postMessage({ type: 'RECORDING_START' });
+      } else {
+        recBtn.classList.remove('is-recording');
+        recLabel.textContent = 'New recording';
+        clearInterval(recTimer);
+        showToast(`Saved recording episode (${recSecs}s)`, '✅');
+        syncChannel.postMessage({ type: 'RECORDING_STOP' });
+      }
+    });
+
+    // Add Workflow Button
+    let workflowCount = 5;
+    document.getElementById('addWorkflowBtn').addEventListener('click', () => {
+      const routineName = prompt('Enter new workflow name:', 'invoice reconciliation');
+      if (routineName) {
+        workflowCount++;
+        document.getElementById('workflowBadgeCount').textContent = workflowCount;
+        
+        // Add card to DOM
+        const group = document.querySelector('.routine-group-block[data-group="whatsapp-sends"]');
+        const newCard = document.createElement('div');
+        newCard.className = 'routine-card-item';
+        newCard.innerHTML = `
+          <div class="routine-card-left">
+            <div class="routine-icon-circle" style="background: rgba(168, 85, 247, 0.12); color: #a855f7;">
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="currentColor"/></svg>
+            </div>
+            <div class="routine-main-col">
+              <div class="routine-name-row">
+                <span class="routine-name">${routineName}</span>
+                <span class="badge-state-ready" style="color:#a855f7; border-color:rgba(168,85,247,0.3); background:rgba(168,85,247,0.1);">Compiled DAG</span>
+              </div>
+              <div class="routine-chips-row">
+                <span class="target-tag-gray">Local Agent</span>
+                <span class="routine-quote">"deterministic run"</span>
+              </div>
+            </div>
+          </div>
+          <div class="routine-card-right">
+            <div class="routine-telemetry-col">
+              <span class="telemetry-dot-online"></span>
+              <span class="telemetry-stat">3 steps</span>
+              <span class="telemetry-stat">Just now</span>
+            </div>
+            <span class="card-chevron">›</span>
+          </div>
+        `;
+
+        newCard.addEventListener('click', () => {
+          triggerWorkflowAction(routineName, 'Custom DAG Actor', newCard);
+        });
+
+        group.appendChild(newCard);
+
+        showToast(`Workflow "${routineName}" compiled live!`, '✨');
+
+        syncChannel.postMessage({
+          type: 'WORKFLOW_ADDED',
+          name: routineName,
+          count: workflowCount
+        });
+      }
+    });
+
+    // Tab Switching
+    const tabButtons = document.querySelectorAll('.console-tab');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tabName = btn.textContent.trim();
+        showToast('Switched to ' + tabName, '📑');
+        syncChannel.postMessage({ type: 'TAB_CHANGE', tab: tabName });
+      });
+    });
+
+    // Mic Toggle
+    const micBtn = document.getElementById('micBtn');
+    let isListening = false;
+    micBtn.addEventListener('click', () => {
+      isListening = !isListening;
+      micBtn.classList.toggle('is-active', isListening);
+      if (isListening) {
+        showToast('Listening with local microphone...', '🎙️');
+      } else {
+        showToast('Microphone muted', '🎙️');
+      }
+      syncChannel.postMessage({ type: 'MIC_TOGGLE', active: isListening });
+    });
+
+    // Search input filter
+    document.getElementById('routineSearch').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.routine-card-item');
+      let matches = 0;
+      cards.forEach(card => {
+        const title = card.querySelector('.routine-name').textContent.toLowerCase();
+        const matchesQuery = title.includes(query);
+        card.style.display = matchesQuery ? 'flex' : 'none';
+        if (matchesQuery) matches++;
+      });
+    });
+
+    function filterRoutines(cat) {
+      showToast(`Showing ${cat.toUpperCase()} workflows`, '📊');
+    }
+
+    // Toast helper
+    let toastTimeout;
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('actionToast');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2400);
+    }
+  </script>
+</body>
+</html>
